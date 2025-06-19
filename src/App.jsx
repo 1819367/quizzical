@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import './App.css'
-import clsx from 'clsx'
 import StartScreen from './components/StartScreen/StartScreen'
 import QuizScreen from './components/QuizScreen/QuizScreen'
 import imagetop from './images/shape-1.png'
@@ -14,12 +13,8 @@ export default function App() {
   return (
     <main>
       <img className="img-top" src={imagetop} alt='Image shape top' />
-      <StartScreen />
-
-      {showQuiz && 
-        
-        <QuizScreen 
-        />}
+      
+      {!showQuiz ? <StartScreen /> : <QuizScreen /> }
       
       <img className="img-bottom" src={imageBottom} alt='Image shape bottom'/>
     </main>

@@ -7,6 +7,30 @@ export default function QuizScreen () {
     const [ quizCompleted, setQuizCompleted ] = useState(false);
     const [ questions, setQuestions ] = useState([])
 
+    //add a handler function to update selected answer
+    function handleAnswerSelect(questionIndex, answer) {
+        setQuestions(prevQuestions => {
+            return prevQuestions.map((q, idx) => {
+                if(idx === questionIndex) {
+                    return {
+                        ...q,
+                        selected_answer: answer
+                    };
+                } else {
+                    return q;
+                }
+            });
+        })
+    }
+ 
+    // Shuffle when the Questions are set
+    function shuffle(array) {
+        return array
+            .map(value => ({ value, sort: Math.random() }))
+            .sort((a, b) => a.sort - b.sort)
+            .map(({ value }) => value);
+    }
+
     // fetch, extract and save the questions array
     useEffect(() => {
         fetch('https://opentdb.com/api.php?amount=5&type=multiple')
@@ -19,7 +43,8 @@ export default function QuizScreen () {
                             question: question.question,
                             incorrect_answers: question.incorrect_answers,
                             correct_answer: question.correct_answer,
-                            selected_answer: undefined
+                            all_answers: shuffle([...question.incorrect_answers, question.correct_answer]),
+                            selected_answer: null
                         }))
                     );
                 } else {
@@ -39,6 +64,7 @@ export default function QuizScreen () {
             <form className={clsx(styles['quiz-screen__form'])}>
                 <Questions
                     questions={questions}
+                    onAnswerSelect={handleAnswerSelect}
                 />
             </form>
         </section>
@@ -48,7 +74,13 @@ export default function QuizScreen () {
             {quizCompleted &&           
             <p className={clsx(styles['quiz-screen__results-text'])}>You scored 4/5 correct answers.</p>}
            
-            <button className={clsx(styles['quiz-screen__action-btn'])}>
+            <button 
+                className={clsx(styles['quiz-screen__action-btn'])}
+                onClick={e => {
+                    e.preventDefault();
+                    setQuizCompleted(prev => !prev) //placeholder handler to toggle quizCompleted
+                }}
+                >
 
              {quizCompleted ? 'Play again' : 'Check answers'}
 

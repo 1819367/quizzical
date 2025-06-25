@@ -3,7 +3,7 @@ import styles from './QuizScreen.module.css'
 import clsx from 'clsx' 
 import Questions from '../Questions/Questions'
 
-export default function QuizScreen () {
+export default function QuizScreen ({ returnToStart }) {
     const [ quizCompleted, setQuizCompleted ] = useState(false);
     const [ questions, setQuestions ] = useState([])
 
@@ -34,8 +34,8 @@ export default function QuizScreen () {
             .map(({ value }) => value);
     }
 
-    // fetch, extract and save the questions array
-    useEffect(() => {
+    // Extract fetch logic to a function
+    function fetchQuestions() {
         fetch('https://opentdb.com/api.php?amount=5&&category=12&difficulty=medium&type=multiple')
             .then(res => res.json())
             .then(data => {``
@@ -59,6 +59,10 @@ export default function QuizScreen () {
                 setQuestions([]);
                 console.error("Fetch error:", error);
             });
+    }
+    //call fetchQuestions in UseEffect (on Mount)
+    useEffect(() => {
+        fetchQuestions();
     }, []);
 
     return (
@@ -82,12 +86,31 @@ export default function QuizScreen () {
                 className={clsx(styles['quiz-screen__action-btn'])}
                 onClick={e => {
                     e.preventDefault();
-                    setQuizCompleted(prev => !prev) //placeholder handler to toggle quizCompleted
+                    // setQuizCompleted(prev => !prev) //placeholder handler to toggle quizCompleted
+                    if (quizCompleted) {
+                        setQuizCompleted(false); //reset state to false
+                        fetchQuestions(); //fetch new quetions
+                    } else {
+                        setQuizCompleted(true); //for 'checked answers'
+                    }
                 }}
                 >
              {quizCompleted ? 'Play again' : 'Check answers'}
+                </button>
 
-            </button>
+            {quizCompleted && (
+                <button
+                    className={clsx(styles['quiz-screen__return-btn'])}
+                    onClick={() => {
+                    setQuizCompleted(false);
+                    setQuestions([]);
+                    returnToStart();
+                    }}
+                >
+                     Return to Start
+                </button>
+        )}
+
         </section>
        </> 
      

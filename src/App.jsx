@@ -7,17 +7,18 @@ import imageBottom from './images/shape-2.png'
 
 export default function App() {
   // State values
-  const [ showQuiz, setShowQuiz ] = useState(true)
+  const [ showQuiz, setShowQuiz ] = useState(false)
 
   return (
     <main>
       <img className="img-top" src={imagetop} alt='Image shape top' />
 
       { showQuiz ? 
+        <QuizScreen returnToStart={() => setShowQuiz(false)} /> 
+         :
         <StartScreen 
-          showQuiz={() => setShowQuiz(false)}
-        /> :
-        <QuizScreen /> 
+          showQuiz={() => setShowQuiz(true)}
+        />  
     }      
       <img className="img-bottom" src={imageBottom} alt='Image shape bottom'/>
     </main>

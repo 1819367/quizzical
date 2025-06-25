@@ -1,33 +1,31 @@
 import styles from './Questions.module.css'
 import { decode } from "html-entities"
 import clsx from 'clsx'
+import { nanoid } from 'nanoid' // <-- Import nanoid
 
 export default function Questions({questions, onAnswerSelect, quizCompleted}) {
-    // console.log(questions)
     if (!questions.length) {
         return <div>Loading questions ...</div>
     }
 
     return (
         <>
-            {questions.map((data, idx) => {
-
-                return (
-                    <fieldset className={clsx(styles['question__fieldset'])}  key={idx}>
-
-                        <legend className={clsx(styles['question__legend'])}>
-                            {decode(data.question)} 
-                        </legend>  
-                        <div className={clsx(styles['question__answers'])}>
-                            {data.all_answers.map((answer, aIdx) => (
+            {questions.map((data, idx) => (
+                <fieldset className={clsx(styles['question__fieldset'])} key={idx}>
+                    <legend className={clsx(styles['question__legend'])}>
+                        {decode(data.question)} 
+                    </legend>  
+                    <div className={clsx(styles['question__answers'])}>
+                        {data.all_answers.map((answer, aIdx) => {
+                            const inputId = nanoid(); // Generate a unique ID for each answer
+                            return (
                                 <label 
+                                    htmlFor={inputId} // <-- Set htmlFor to the input's id
                                     className={clsx(
                                         styles['question__answer-label'],
-                                        {   //highlight the checked answer
+                                        {   
                                             [styles['answer-checked']]: !quizCompleted && answer === data.selected_answer,
-                                            //highlight the correct answer after the quiz is completed.
                                             [styles['answer-correct']]: quizCompleted && answer === data.correct_answer,
-                                            //highlight the user's wrong selction after quiz is completed.
                                             [styles['answer-incorrect']]: 
                                                 quizCompleted && 
                                                 answer === data.selected_answer &&
@@ -37,6 +35,7 @@ export default function Questions({questions, onAnswerSelect, quizCompleted}) {
                                     key={aIdx}
                                 >
                                     <input 
+                                        id={inputId} // <-- Assign the unique id here
                                         className={clsx(styles['question__answer-input'])} 
                                         type='radio' 
                                         name={`question${idx + 1}`}
@@ -46,11 +45,11 @@ export default function Questions({questions, onAnswerSelect, quizCompleted}) {
                                     />
                                     {decode(answer)}
                                 </label>
-                    ))}    
+                            );
+                        })}    
                     </div>
                 </fieldset>
-                );
-            })}
+            ))}
         </>
     );
 }

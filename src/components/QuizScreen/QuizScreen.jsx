@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import styles from './QuizScreen.module.css'
 import clsx from 'clsx' 
-import Questions from '../Questions/Questions';
+import Questions from '../Questions/Questions'
 
 export default function QuizScreen () {
     const [ quizCompleted, setQuizCompleted ] = useState(false);
@@ -23,6 +23,9 @@ export default function QuizScreen () {
         })
     }
  
+    // Calculate the score based on the question
+    const score = questions.filter(q => q.selected_answer === q.correct_answer).length;
+
     // Shuffle when the Questions are set
     function shuffle(array) {
         return array
@@ -73,7 +76,7 @@ export default function QuizScreen () {
         <section className={clsx(styles['quiz-screen__actions'])}>
 
             {quizCompleted &&           
-            <p className={clsx(styles['quiz-screen__results-text'])}>You scored 4/5 correct answers.</p>}
+            <p className={clsx(styles['quiz-screen__results-text'])}>You scored {score}/{questions.length} correct answers.</p>}
            
             <button 
                 className={clsx(styles['quiz-screen__action-btn'])}

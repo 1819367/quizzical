@@ -6,7 +6,7 @@ export default function StartScreen ({showQuiz}) {
     return (
         <section className={clsx(styles['start-screen'])}>
           <h1 className={clsx(styles['start-screen__title'])}>Quizzical</h1>
-          <p className={clsx(styles['start-screen__intro-text'])}>Click the button to begin!</p>
+          <p className={clsx(styles['start-screen__intro-text'])}>A music trivia quiz. <br></br>Click the button to begin!</p>
           
           <button 
             className={clsx(styles['start-screen__btn'])}

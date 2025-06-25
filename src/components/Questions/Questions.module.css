@@ -25,10 +25,6 @@
     transition: background-color 0.2s, opacity 0.2s;
 }
 
-.question__answer-label:has(input[type='radio']:checked) {
-    background: #D6DBF5;
-}
-
 .question__answer-label:last-child {
     margin-right: 0;
 }
@@ -36,6 +32,18 @@
 .question__answer-label:focus-within {
     outline: 2px solid #4d5b9e;
     outline-offset: 2px;
+}
+
+.question__answer-label.answer-checked {
+    background: #d6dbf5; /*lite blue for answer checked*/
+}
+
+.question__answer-label.answer-correct {
+    background: #94D7A2 !important; /*green for incorrect*/
+}
+
+.question__answer-label.answer-incorrect {
+    background: #F8BCBC !important; /*red for incorrect*/
 }
 
 @media (min-width: 600px) {

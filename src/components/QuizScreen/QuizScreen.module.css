@@ -20,6 +20,7 @@
 .quiz-screen__actions {
     display: flex;
     justify-content: center;
+    align-items: center;
     gap: 10rem;
     font-weight: 600;
     margin-block: .75rem; /*adjust*/

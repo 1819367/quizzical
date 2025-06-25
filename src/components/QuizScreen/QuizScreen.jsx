@@ -33,7 +33,7 @@ export default function QuizScreen () {
 
     // fetch, extract and save the questions array
     useEffect(() => {
-        fetch('https://opentdb.com/api.php?amount=5&type=multiple')
+        fetch('https://opentdb.com/api.php?amount=5&&category=12&difficulty=medium&type=multiple')
             .then(res => res.json())
             .then(data => {``
                 // Defensive check
@@ -65,6 +65,7 @@ export default function QuizScreen () {
                 <Questions
                     questions={questions}
                     onAnswerSelect={handleAnswerSelect}
+                    quizCompleted={quizCompleted}
                 />
             </form>
         </section>
@@ -81,7 +82,6 @@ export default function QuizScreen () {
                     setQuizCompleted(prev => !prev) //placeholder handler to toggle quizCompleted
                 }}
                 >
-
              {quizCompleted ? 'Play again' : 'Check answers'}
 
             </button>

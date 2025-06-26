@@ -1,9 +1,11 @@
-import { useState } from 'react'
-import './App.css'
-import StartScreen from './components/StartScreen/StartScreen'
-import QuizScreen from './components/QuizScreen/QuizScreen'
-import imagetop from './images/shape-1.png'
-import imageBottom from './images/shape-2.png'
+import { useState } from 'react';
+import './App.css';
+import StartScreen from './components/StartScreen/StartScreen';
+import QuizScreen from './components/QuizScreen/QuizScreen';
+import imagetop from './images/shape-1.png';
+import imageBottom from './images/shape-2.png';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function App() {
   // State values
@@ -21,6 +23,7 @@ export default function App() {
         />  
     }      
       <img className="img-bottom" src={imageBottom} alt='Image shape bottom'/>
+       <ToastContainer />
     </main>
   )
 }

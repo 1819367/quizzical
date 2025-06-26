@@ -1,7 +1,22 @@
-import styles from './StartScreen.module.css'
-import clsx from 'clsx'
+import { useEffect } from 'react'
+import styles from './StartScreen.module.css';
+import clsx from 'clsx';
+import { toast } from 'react-toastify';
 
 export default function StartScreen ({showQuiz}) {
+
+    //use useEffect to show the toast when the compoenent mounts
+    useEffect(() => {
+      toast('Welcome to Quizzical!', {
+        position: 'top-center', 
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined  
+      });
+    }, []);
 
     return (
         <section className={clsx(styles['start-screen'])}>

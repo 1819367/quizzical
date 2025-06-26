@@ -5,7 +5,8 @@ import Questions from '../Questions/Questions'
 
 export default function QuizScreen ({ returnToStart }) {
     const [ quizCompleted, setQuizCompleted ] = useState(false);
-    const [ questions, setQuestions ] = useState([])
+    const [ questions, setQuestions ] = useState([]);
+    const [ warning, setWarning ] = useState(''); //add a state variable for the warning
 
     //add a handler function to update selected answer
     function handleAnswerSelect(questionIndex, answer) {
@@ -20,11 +21,14 @@ export default function QuizScreen ({ returnToStart }) {
                     return q;
                 }
             });
-        })
+        });
+        setWarning(''); //clear warning when user select an answer
     }
  
     // Calculate the score based on the question
     const score = questions.filter(q => q.selected_answer === q.correct_answer).length;
+    //all answered logic
+    const allAnswered = questions.every(q => q.selected_answer !== null);
 
     // Shuffle when the Questions are set
     function shuffle(array) {
@@ -38,7 +42,7 @@ export default function QuizScreen ({ returnToStart }) {
     function fetchQuestions() {
         fetch('https://opentdb.com/api.php?amount=5&&category=12&difficulty=medium&type=multiple')
             .then(res => res.json())
-            .then(data => {``
+            .then(data => {
                 // Defensive check
                 if (data && Array.isArray(data.results)) {
                     setQuestions(
@@ -78,7 +82,9 @@ export default function QuizScreen ({ returnToStart }) {
         </section>
 
         <section className={clsx(styles['quiz-screen__actions'])}>
-
+            {warning && (
+                <p className={clsx(styles['quiz-screen__warning'])}> {warning} </p>
+            )}
             {quizCompleted &&           
             <p className={clsx(styles['quiz-screen__results-text'])}>You scored {score}/{questions.length} correct answers.</p>}
            
@@ -86,7 +92,12 @@ export default function QuizScreen ({ returnToStart }) {
                 className={clsx(styles['quiz-screen__action-btn'])}
                 onClick={e => {
                     e.preventDefault();
-                    // setQuizCompleted(prev => !prev) //placeholder handler to toggle quizCompleted
+                    //add a warning if the quiz isn't complete
+                    if (!quizCompleted && !allAnswered) {
+                        setWarning('You need to complete the quiz first before checking the answers.');
+                         return;
+                    }
+                    setWarning(''); //Clear warning if proceeding
                     if (quizCompleted) {
                         setQuizCompleted(false); //reset state to false
                         fetchQuestions(); //fetch new quetions
@@ -95,7 +106,7 @@ export default function QuizScreen ({ returnToStart }) {
                     }
                 }}
                 >
-             {quizCompleted ? 'Play again' : 'Check answers'}
+                    {quizCompleted ? 'Play again' : 'Check answers'}
                 </button>
 
             {quizCompleted && (

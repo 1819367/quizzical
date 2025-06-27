@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react'
-import styles from './QuizScreen.module.css'
-import clsx from 'clsx' 
-import Questions from '../Questions/Questions'
+import { useState, useEffect } from 'react';
+import styles from './QuizScreen.module.css';
+import clsx from 'clsx';
+import Questions from '../Questions/Questions';
 
 export default function QuizScreen ({ returnToStart }) {
     const [ quizCompleted, setQuizCompleted ] = useState(false);

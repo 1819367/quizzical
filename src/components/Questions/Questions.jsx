@@ -1,6 +1,6 @@
-import styles from './Questions.module.css'
-import { decode } from "html-entities"
-import clsx from 'clsx'
+import styles from './Questions.module.css';
+import { decode } from "html-entities";
+import clsx from 'clsx';;
 import { nanoid } from 'nanoid' // <-- Import nanoid
 
 export default function Questions({questions, onAnswerSelect, quizCompleted}) {
@@ -20,6 +20,7 @@ export default function Questions({questions, onAnswerSelect, quizCompleted}) {
                             const inputId = nanoid(); // Generate a unique ID for each answer
                             return (
                                 <label 
+                                    key={inputId} //set key to the input's id
                                     htmlFor={inputId} // <-- Set htmlFor to the input's id
                                     className={clsx(
                                         styles['question__answer-label'],
@@ -32,7 +33,6 @@ export default function Questions({questions, onAnswerSelect, quizCompleted}) {
                                                 answer !== data.correct_answer
                                         }
                                     )} 
-                                    key={aIdx}
                                 >
                                     <input 
                                         id={inputId} // <-- Assign the unique id here
